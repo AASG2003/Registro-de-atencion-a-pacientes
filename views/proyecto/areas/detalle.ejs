@@ -1,0 +1,102 @@
+<%- include("../../template/cabecera", {tituloWeb: 'Detalle de Área'}) %>
+
+    <div class="container">
+        <h1>Detalle Área</h1> <!-- Change "Detalle Medico" to "Detalle Área" -->
+        <% if (error) { %>
+            <p>
+                <%= mensaje %> 
+            </p>
+            <a href="/areas" class="btn btn-dark btn-block">Volver a áreas</a> <!-- Update the link to /areas -->
+        <% } %>
+
+        <% if (!error) { %>
+
+            <form id="formularioEditar" data-id="<%= area.id %>">
+                <input 
+                    type="text"
+                    placeholder="Agregar nombre"
+                    class="form-control my-2"
+                    name="nombre"
+                    value="<%= area.nombre || '' %>"
+                >
+
+                <!-- Remove or update other fields specific to your "area" model... -->
+
+                <button
+                    class="btn btn-warning btn-block"
+                    type="submit"
+                >
+                    Editar
+                </button>
+            </form>
+
+            <hr>
+            <a href="/areas" class="btn btn-dark btn-block my-2">Volver a Áreas</a><br> <!-- Update the link to /areas -->
+            <button
+                class="btn btn-danger btn-sm mt-5"
+                id="btnEliminar"
+                data-id="<%= area.id %>"
+            >
+                Eliminar
+            </button>
+        <% } %>
+        
+    </div>
+
+<script>
+
+    const btnEliminar = document.querySelector('#btnEliminar')
+
+    btnEliminar.addEventListener('click', async() => {
+        console.log('me diste click')
+        const id = btnEliminar.dataset.id
+        console.log('id', id)
+        try {
+            if (confirm('¿Estás seguro de que deseas eliminar esta área?')) { 
+                const data = await fetch(`/areas/${id}`, {
+                    method: 'delete'
+                })
+                const res = await data.json()
+                
+                if(res.estado){
+                    window.location.href = '/areas' 
+                } else {
+                    console.log(res)
+                }
+            }   
+
+        } catch (error) {
+            console.log(error)
+        }
+    })
+
+    const formularioEditar = document.querySelector('#formularioEditar')
+
+    formularioEditar.addEventListener('submit', async(e) => {
+        e.preventDefault()
+        
+        const nombre = formularioEditar.elements['nombre'].value 
+        const id = formularioEditar.dataset.id
+        
+        try {
+            const data = await fetch(`/areas/${id}`, {
+                method: 'put',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({nombre}) 
+            })
+            const res = await data.json()
+            
+            if(res.estado){
+                window.location.href = '/areas' 
+            } else {
+                console.log(res)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+    })
+
+</script>

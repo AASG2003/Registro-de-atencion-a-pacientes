@@ -1,0 +1,137 @@
+<%- include("../template/cabecera", {tituloWeb: 'Detalle de paciente'}) %>
+
+    <div class="container">
+        <h1>Detalle Paciente</h1>
+        <% if (error) { %>
+            <p>
+                <%= mensaje %> 
+            </p>
+            <a href="/pacientes" class="btn btn-dark btn-block">Volver a pacientes</a>
+        <% } %>
+
+        <% if (!error) { %>
+
+            <form id="formularioEditar" data-id="<%= paciente.id %>">
+                <input 
+                    type="text"
+                    placeholder="Agregar nombres"
+                    class="form-control my-2"
+                    name="nombres"
+                    value="<%= paciente.nombres || '' %>"
+                >
+                <input 
+                    type="text"
+                    placeholder="Agregar apellidos"
+                    class="form-control my-2"
+                    name="apellidos"
+                    value="<%= paciente.apellidos || '' %>"
+                >
+                <input 
+                    type="datetime-local"
+                    placeholder="Agregar fecha de nacimiento"
+                    class="form-control my-2"
+                    name="fecha_de_nacimiento"
+                    value="<%= paciente.fecha_de_nacimiento ? paciente.fecha_de_nacimiento.toISOString().slice(0, 16) : '' %>"
+                >
+                <input 
+                    type="text"
+                    placeholder="Agregar telefono"
+                    class="form-control my-2"
+                    name="telefono"
+                    value="<%= paciente.telefono || '' %>"
+                >
+                <input 
+                    type="text"
+                    placeholder="Agregar direccion"
+                    class="form-control my-2"
+                    name="direccion"
+                    value="<%= paciente.direccion || '' %>"
+                >
+
+                <button
+                    class="btn btn-warning btn-block"
+                    type="submit"
+                >
+                    Editar
+                </button>
+            </form>
+
+            <hr>
+            <a href="/pacientes" class="btn btn-dark btn-block my-2">Volver a Pacientes</a><br>
+            <button
+                class="btn btn-danger btn-sm mt-5"
+                id="btnEliminar"
+                data-id="<%= paciente.id %>"
+            >
+                Eliminar
+            </button>
+        <% } %>
+        
+    </div>
+    
+    
+
+<!-- <%- include("../template/footer") %> -->
+
+
+<script>
+
+    const btnEliminar = document.querySelector('#btnEliminar')
+
+    btnEliminar.addEventListener('click', async() => {
+        console.log('me diste click')
+        const id = btnEliminar.dataset.id
+        console.log('id', id)
+        try {
+            if (confirm('¿Estás seguro de que deseas eliminar este paciente?')) {
+                const data = await fetch(`/pacientes/${id}`, {
+                    method: 'delete'
+                })
+                const res = await data.json()
+                
+                if(res.estado){
+                    window.location.href = '/pacientes'
+                }else {
+                    console.log(res)
+                }
+            }   
+
+        } catch (error) {
+            console.log(error)
+        }
+    })
+
+    const formularioEditar = document.querySelector('#formularioEditar')
+
+    formularioEditar.addEventListener('submit', async(e) => {
+        e.preventDefault()
+        
+        const nombres = formularioEditar.elements['nombres'].value
+        const apellidos = formularioEditar.elements['apellidos'].value
+        const fecha_nac = formularioEditar.elements['fecha_de_nacimiento'].value
+        const telefono = formularioEditar.elements['telefono'].value
+        const direccion = formularioEditar.elements['direccion'].value
+        const id = formularioEditar.dataset.id
+        
+        try {
+            const data = await fetch(`/pacientes/${id}`, {
+                method: 'put',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({nombres, apellidos, fecha_nac, telefono, direccion})
+            })
+            const res = await data.json()
+            
+            if(res.estado){
+                window.location.href = '/pacientes'
+            }else{
+                console.log(res)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+    })
+
+</script>

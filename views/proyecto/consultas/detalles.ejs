@@ -1,0 +1,62 @@
+<%- include("../../template/cabecera", {tituloWeb: 'Crear nuevo paciente'}) %>
+
+    <div class="container">
+        <h1>Editar</h1>
+        <form action="/pacientes/consultas/<%= paciente._id %>/editar-consulta/<%= consulta._id %>" method="POST">
+            <!-- <label for="fecha">Fecha:</label> -->
+            <input type="datetime-local" name="fecha" value="<%= consulta.fecha ? consulta.fecha.toISOString().slice(0, 16) : '' %>%>" required class="form-control my-2">
+        
+            <!-- <label for="motivo_consulta">Motivo de Consulta:</label> -->
+            <input type="text" name="motivo" value="<%= consulta.motivo%>" required class="form-control my-2">
+        
+            <!-- <label for="doctor">Doctor:</label> -->
+            
+
+            <select 
+                    class="form-control my-2"
+                    name="doctor"
+                >
+
+                    <% medicos.forEach(medico => { %>
+                        <option 
+                            value="<%= medico.id %>"
+                            <% if (medico.id.toString() === consulta.doctor.toString()) { %> selected <% } %> 
+                        >
+                            <%= medico.nombres %> <%=medico.apellidos%>
+                        </option>
+                    <% }); %>
+                </select>
+        
+            <!-- <label for="diagnostico">Diagnóstico:</label> -->
+            <input type="text" name="diagnostico" value="<%= consulta.diagnostico %>" required class="form-control my-2">
+        
+            <input type="submit" value="Editar" class="btn btn-success btn-block my-2">
+          </form>
+          <button id="eliminarConsultaBtn" data-id-paciente="<%= paciente.id %>" data-id-consulta="<%= consulta.id %>" class="btn btn-danger my-2">Eliminar Consulta</button><br>
+
+          
+          <a href="/pacientes/consultas/<%= paciente._id %>" class="btn btn-dark btn-block">Volver al Detalle del Paciente</a>
+          <script>
+            // Función para eliminar la consulta al hacer clic en el botón
+            document.getElementById('eliminarConsultaBtn').addEventListener('click', async function() {
+              const idPaciente = this.getAttribute('data-id-paciente');
+              const idConsulta = this.getAttribute('data-id-consulta');
+          
+              try {
+                const response = await fetch(`/pacientes/consultas/${idPaciente}/eliminar-consulta/${idConsulta}`, {
+                  method: 'POST', // Utiliza 'DELETE' si tu ruta usa el método DELETE
+                });
+          
+                if (response.ok) {
+                  // La consulta se eliminó correctamente, puedes redirigir o realizar otras acciones
+                  window.location.href = `/pacientes/consultas/${idPaciente}`;
+                } else {
+                  console.error('Error al eliminar la consulta:', response.status);
+                }
+              } catch (error) {
+                console.error('Error al realizar la solicitud:', error);
+              }
+            });
+          </script>
+    </div>
+    

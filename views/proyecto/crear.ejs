@@ -1,0 +1,45 @@
+<%- include("../template/cabecera", {tituloWeb: 'Crear nuevo paciente'}) %>
+
+    <div class="container">
+        <h1>Crear</h1>
+        <form action="/pacientes" method="POST">
+            <input 
+                type="text"
+                placeholder="Agregar nombres"
+                class="form-control my-2"
+                name="nombres"
+            >
+            <input 
+                type="text"
+                placeholder="Agregar apellidos"
+                class="form-control my-2"
+                name="apellidos"
+            >
+            <input 
+                type="datetime-local"
+                placeholder="Agregar fecha de nacimiento"
+                class="form-control my-2"
+                name="fecha_de_nacimiento"
+            >
+            <input 
+                type="text"
+                placeholder="Agregar telefono"
+                class="form-control my-2"
+                name="telefono"
+            >
+            <input 
+                type="text"
+                placeholder="Agregar direccion"
+                class="form-control my-2"
+                name="direccion"
+            >
+            <button
+                class="btn btn-success btn-block my-2"
+                type="submit"
+            >
+                Agregar
+            </button>
+        </form>
+        <a href="/pacientes" class="btn btn-dark btn-block">Volver a Pacientes</a>
+    </div>
+    

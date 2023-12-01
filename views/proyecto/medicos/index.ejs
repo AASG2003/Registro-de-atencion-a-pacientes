@@ -1,0 +1,41 @@
+<%- include("../../template/cabecera",{tituloWeb:'Pagina de inicio'})%>
+    <div class="container">
+        <h1>Medicos</h1>
+        <a class="btn btn-success btn-block my-4" href="/medicos/crear">
+            Crear nuevo medico
+        </a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombres</th>
+                    <th scope="col">Apellidos</th>
+                    <th scope="col">Fecha de Nacimiento</th>
+                    <th scope="col">Telefono</th>
+                    <th scope="col">Direccion</th>
+                    <th scope="col">Area</th>
+                    <th scope="col">Accion</th>
+                </tr>  
+            </thead>
+            <tbody>
+                <% if(arrayMedicos.length > 0){ %>
+                    <% arrayMedicos.forEach(medico => { %>
+                        <tr>
+                            <th scope="row"><%=medico.id %></th>
+                            <td><%=medico.nombres %></td>
+                            <td><%=medico.apellidos %></td>
+                            <td><%=medico.fecha_de_nacimiento %></td>
+                            <td><%=medico.telefono %></td>
+                            <td><%=medico.direccion %></td>
+                            <td><%=medico.area %></td>
+                            <td>
+                                <a href="/medicos/<%=medico.id%>" class="btn btn-warning btn-sm">
+                                    editar
+                                </a>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } %>
+            </tbody>
+        </table>
+    </div>

@@ -1,0 +1,31 @@
+<%- include("../../template/cabecera",{tituloWeb:'Pagina de inicio'})%>
+    <div class="container">
+        <h1>Áreas</h1> <!-- Change "Medicos" to "Áreas" -->
+        <a class="btn btn-success btn-block my-4" href="/areas/crear"> <!-- Update the link to /areas -->
+            Crear nueva área <!-- Change "Crear nuevo medico" to "Crear nueva área" -->
+        </a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th> <!-- Change "Nombres" to "Nombre" -->
+                    <th scope="col">Acción</th> <!-- Change "Accion" to "Acción" -->
+                </tr>  
+            </thead>
+            <tbody>
+                <% if(arrayAreas.length > 0){ %> <!-- Update arrayMedicos to arrayAreas -->
+                    <% arrayAreas.forEach(area => { %> <!-- Update arrayMedicos to arrayAreas -->
+                        <tr>
+                            <th scope="row"><%=area.id %></th> <!-- Update medico to area -->
+                            <td><%=area.nombre %></td> <!-- Update medico to area -->
+                            <td>
+                                <a href="/areas/<%=area.id%>" class="btn btn-warning btn-sm"> <!-- Update medico to area -->
+                                    editar
+                                </a>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } %>
+            </tbody>
+        </table>
+    </div>

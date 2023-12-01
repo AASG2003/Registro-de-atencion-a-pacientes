@@ -1,0 +1,42 @@
+<%- include("../../template/cabecera",{tituloWeb:'Paciente'})%>
+    <!-- <h1 class="text-primary">Titulo del sitio: Index</h1>
+    <h2> Paciente </h2> -->
+    <div class="container">
+        <div class="container">
+            <h1>Perfil del Paciente</h1>
+          
+            <!-- Div con datos del paciente utilizando clases de Bootstrap -->
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Datos del Paciente</h5>
+                <!-- Cada dato del paciente se muestra en un párrafo -->
+                <p class="card-text"><strong>Nombres:</strong> <%= paciente.nombres %></p>
+                <p class="card-text"><strong>Apellidos:</strong> <%= paciente.apellidos %></p>
+                <p class="card-text"><strong>Fecha de Nacimiento:</strong> <%= paciente.fecha_de_nacimiento %></p>
+                <p class="card-text"><strong>Teléfono:</strong> <%= paciente.telefono %></p>
+                <p class="card-text"><strong>Dirección:</strong> <%= paciente.direccion %></p>
+          
+                <!-- Consultas se muestran en una lista -->
+                <h5 class="card-title mt-3">Consultas</h5>
+                <ul class="list-group">
+                  <% paciente.consultas.forEach(consulta => { %>
+                    <li class="list-group-item">
+                      <strong>Fecha:</strong> <%= consulta.fecha %><br>
+                      <strong>Motivo:</strong> <%= consulta.motivo%><br>
+                      <strong>Doctor:</strong> <%= consulta.doctor %><br>
+                      <strong>Diagnóstico:</strong> <%= consulta.diagnostico %><br>
+                      <a href="/pacientes/consultas/<%=paciente.id%>/editar-consulta/<%=consulta.id%>" class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+                    </li>
+                  <% }); %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        <a class="btn btn-success btn-block my-2" href="/pacientes/consultas/<%=paciente.id%>/crear">
+            Crear nueva Consulta
+        </a><br>
+        <a href="/pacientes" class="btn btn-dark btn-block my-2">Volver a Pacientes</a>
+    </div>
+    

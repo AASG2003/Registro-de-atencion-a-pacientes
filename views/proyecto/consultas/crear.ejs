@@ -1,0 +1,28 @@
+<%- include("../../template/cabecera", {tituloWeb: 'Crear nuevo paciente'}) %>
+
+    <div class="container">
+        <h1>Crear</h1>
+        <form action="/pacientes/consultas/<%= paciente._id %>/crear/nueva-consulta" method="POST">
+            <label for="fecha">Fecha:</label>
+            <input type="datetime-local" name="fechad" required class="form-control my-2">
+        
+            <label for="motivo_consulta">Motivo de Consulta:</label>
+            <input type="text" name="motivo_consultad" required class="form-control my-2">
+
+            <label for="doctor">Doctor:</label>
+            <select name="doctor" class="form-control my-2">
+                <% arrayMedicos.forEach(medico => { %>
+                    <option value="<%= medico.id %>"><%= medico.nombres %> <%= medico.apellidos %></option>
+                <% }); %>
+            </select>
+        
+            <label for="diagnostico">Diagnóstico:</label>
+            <input type="text" name="diagnosticod" required class="form-control my-2">
+        
+            <input type="submit" value="Agregar Consulta" class="btn btn-success btn-block my-2">
+          </form>
+          
+          <a href="/pacientes/consultas/<%= paciente._id %>" class="btn btn-dark btn-block">Volver al Detalle del Paciente</a>
+        
+    </div>
+    

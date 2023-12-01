@@ -1,0 +1,147 @@
+<%- include("../../template/cabecera", {tituloWeb: 'Detalle de Medico'}) %>
+
+    <div class="container">
+        <h1>Detalle Medico</h1>
+        <% if (error) { %>
+            <p>
+                <%= mensaje %> 
+            </p>
+            <a href="/medicos" class="btn btn-dark btn-block">Volver a medicos</a>
+        <% } %>
+
+        <% if (!error) { %>
+
+            <form id="formularioEditar" data-id="<%= medico.id %>">
+                <input 
+                    type="text"
+                    placeholder="Agregar nombres"
+                    class="form-control my-2"
+                    name="nombres"
+                    value="<%= medico.nombres || '' %>"
+                >
+                <input 
+                    type="text"
+                    placeholder="Agregar apellidos"
+                    class="form-control my-2"
+                    name="apellidos"
+                    value="<%= medico.apellidos || '' %>"
+                >
+                <input 
+                    type="datetime-local"
+                    placeholder="Agregar fecha de nacimiento"
+                    class="form-control my-2"
+                    name="fecha_de_nacimiento"
+                    value="<%= medico.fecha_de_nacimiento ? medico.fecha_de_nacimiento.toISOString().slice(0, 16) : '' %>"
+                >
+                <input 
+                    type="text"
+                    placeholder="Agregar telefono"
+                    class="form-control my-2"
+                    name="telefono"
+                    value="<%= medico.telefono || '' %>"
+                >
+                <input 
+                    type="text"
+                    placeholder="Agregar direccion"
+                    class="form-control my-2"
+                    name="direccion"
+                    value="<%= medico.direccion || '' %>"
+                >
+                <select 
+                    class="form-control my-2"
+                    name="area"
+                >
+
+                    <% areas.forEach(area => { %>
+                        <option 
+                            value="<%= area.id %>"
+                            <% if (area.id.toString() === medico.area.toString()) { %> selected <% } %> 
+                        >
+                            <%= area.nombre %>
+                        </option>
+                    <% }); %>
+                </select>
+
+                <button
+                    class="btn btn-warning btn-block"
+                    type="submit"
+                >
+                    Editar
+                </button>
+            </form>
+
+            <hr>
+            <a href="/medicos" class="btn btn-dark btn-block my-2">Volver a Medicos</a><br>
+            <button
+                class="btn btn-danger btn-sm mt-5"
+                id="btnEliminar"
+                data-id="<%= medico.id %>"
+            >
+                Eliminar
+            </button>
+        <% } %>
+        
+    </div>
+
+<script>
+
+    const btnEliminar = document.querySelector('#btnEliminar')
+
+    btnEliminar.addEventListener('click', async() => {
+        console.log('me diste click')
+        const id = btnEliminar.dataset.id
+        console.log('id', id)
+        try {
+            if (confirm('¿Estás seguro de que deseas eliminar este medico?')) {
+                const data = await fetch(`/medicos/${id}`, {
+                    method: 'delete'
+                })
+                const res = await data.json()
+                
+                if(res.estado){
+                    window.location.href = '/medicos'
+                } else {
+                    console.log(res)
+                }
+            }   
+
+        } catch (error) {
+            console.log(error)
+        }
+    })
+
+    const formularioEditar = document.querySelector('#formularioEditar')
+
+    formularioEditar.addEventListener('submit', async(e) => {
+        e.preventDefault()
+        
+        const nombres = formularioEditar.elements['nombres'].value
+        const apellidos = formularioEditar.elements['apellidos'].value
+        const fecha_nac = formularioEditar.elements['fecha_de_nacimiento'].value
+        const telefono = formularioEditar.elements['telefono'].value
+        const direccion = formularioEditar.elements['direccion'].value
+        const area = formularioEditar.elements['area'].value // Agrega esta línea para obtener el valor del campo "area"
+        const id = formularioEditar.dataset.id
+        
+        try {
+            const data = await fetch(`/medicos/${id}`, {
+                method: 'put',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({nombres, apellidos, fecha_nac, telefono, direccion, area}) // Agrega "area" al cuerpo
+            })
+            const res = await data.json()
+            
+            if(res.estado){
+                window.location.href = '/medicos'
+            } else {
+                console.log(res)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+    })
+
+</script>

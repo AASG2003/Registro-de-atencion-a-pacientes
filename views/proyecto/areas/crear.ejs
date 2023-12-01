@@ -1,0 +1,21 @@
+<%- include("../../template/cabecera", {tituloWeb: 'Crear nueva área'}) %>
+
+    <div class="container">
+        <h1>Crear</h1>
+        <form action="/areas" method="POST"> <!-- Update the form action to /areas -->
+            <input 
+                type="text"
+                placeholder="Agregar nombre"
+                class="form-control my-2"
+                name="nombre"
+            >
+            <!-- Remove or update other fields specific to your "area" model... -->
+            <button
+                class="btn btn-success btn-block my-2"
+                type="submit"
+            >
+                Agregar
+            </button>
+        </form>
+        <a href="/areas" class="btn btn-dark btn-block">Volver a Áreas</a> <!-- Update the link to /areas -->
+    </div>
